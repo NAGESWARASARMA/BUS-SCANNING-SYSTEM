@@ -5,7 +5,13 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = "college-bus-management-key"
 
-DATABASE = "college_buses.db"
+import os
+
+DATABASE = (
+    "/tmp/college_buses.db"
+    if os.environ.get("VERCEL") == "1"
+    else "college_buses.db"
+)
 
 
 def get_db():
@@ -278,6 +284,7 @@ def scan_bus():
     })
 
 
+initialize_database()
+
 if __name__ == "__main__":
-    initialize_database()
-    app.run(host="127.0.0.1", port=5000, debug=False)
+    app.run(host="0.0.0.0", port=5000, debug=False)

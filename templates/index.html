@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Bus Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #173b70;
+            text-align: center;
+        }
+
+        h2 {
+            color: #173b70;
+            margin-top: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            margin: 22px 0;
+            border-radius: 12px;
+            box-shadow: 0 3px 14px #0000000d;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button, .edit-button {
+            display: inline-block;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .primary {
+            background: #2563eb;
+            color: white;
+            margin-top: 16px;
+        }
+
+        .edit-button {
+            background: #f59e0b;
+            color: #111827;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 7px;
+            margin: 12px 0;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+
+        th {
+            background: #eaf0fa;
+            color: #173b70;
+        }
+
+        @media (max-width: 750px) {
+            body {
+                padding: 12px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>🚌 College Bus Management System</h1>
+    <p style="text-align:center;">
+        Manage bus information and track arrival and departure records.
+    </p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="message {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <section class="card">
+        <h2>➕ Register New Bus</h2>
+
+        <form action="{{ url_for('add_bus') }}" method="POST">
+            <div class="form-grid">
+
+                <div>
+                    <label>Bus Number *</label>
+                    <input name="bus_number" placeholder="Example: BUS001" required>
+                </div>
+
+                <div>
+                    <label>Registration Number</label>
+                    <input name="registration_number" placeholder="Example: APXX1234">
+                </div>
+
+                <div>
+                    <label>Driver Name *</label>
+                    <input name="driver_name" required>
+                </div>
+
+                <div>
+                    <label>Driver Phone</label>
+                    <input name="driver_phone" type="tel">
+                </div>
+
+                <div>
+                    <label>Route *</label>
+                    <input name="route" placeholder="Example: Tenali to College" required>
+                </div>
+
+                <div>
+                    <label>Starting Place</label>
+                    <input name="starting_place">
+                </div>
+
+                <div>
+                    <label>Stops</label>
+                    <textarea name="stops" rows="2" placeholder="Enter stops"></textarea>
+                </div>
+
+                <div>
+                    <label>Scheduled Arrival</label>
+                    <input name="scheduled_arrival" type="time">
+                </div>
+
+                <div>
+                    <label>Scheduled Departure</label>
+                    <input name="scheduled_departure" type="time">
+                </div>
+
+                <div>
+                    <label>Bus Capacity</label>
+                    <input name="capacity" type="number" min="0" value="0">
+                </div>
+
+            </div>
+
+            <button class="primary" type="submit">Register Bus</button>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2>🚌 All Registered Buses ({{ buses|length }})</h2>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Bus Number</th>
+                    <th>Registration No.</th>
+                    <th>Driver</th>
+                    <th>Phone</th>
+                    <th>Route</th>
+                    <th>Starting Place</th>
+                    <th>Stops</th>
+                    <th>Arrival</th>
+                    <th>Departure</th>
+                    <th>Capacity</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for bus in buses %}
+                    <tr>
+                        <td>{{ bus['bus_number'] }}</td>
+                        <td>{{ bus['registration_number'] or '-' }}</td>
+                        <td>{{ bus['driver_name'] }}</td>
+                        <td>{{ bus['driver_phone'] or '-' }}</td>
+                        <td>{{ bus['route'] }}</td>
+                        <td>{{ bus['starting_place'] or '-' }}</td>
+                        <td>{{ bus['stops'] or '-' }}</td>
+                        <td>{{ bus['scheduled_arrival'] or '-' }}</td>
+                        <td>{{ bus['scheduled_departure'] or '-' }}</td>
+                        <td>{{ bus['capacity'] }}</td>
+                        <td>
+                            <a class="edit-button"
+                               href="{{ url_for('edit_bus', bus_id=bus['id']) }}">
+                                ✏️ Edit
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="11">No buses registered yet.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>📋 Bus Scan History ({{ history|length }} latest records)</h2>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Bus Number</th>
+                    <th>Registration No.</th>
+                    <th>Driver</th>
+                    <th>Phone</th>
+                    <th>Route</th>
+                    <th>Event</th>
+                    <th>Scan Date & Time</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for item in history %}
+                    <tr>
+                        <td>{{ item['bus_number'] }}</td>
+                        <td>{{ item['registration_number'] or '-' }}</td>
+                        <td>{{ item['driver_name'] }}</td>
+                        <td>{{ item['driver_phone'] or '-' }}</td>
+                        <td>{{ item['route'] }}</td>
+                        <td>{{ item['event'] }}</td>
+                        <td>{{ item['event_time'] }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">No scans recorded yet.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,164 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+header {
+    background: #123b65;
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+}
+
+header h1 {
+    margin: 0 0 8px;
+}
+
+header p {
+    margin: 0;
+    color: #dbeafe;
+}
+
+main {
+    max-width: 1400px;
+    width: 94%;
+    margin: 25px auto;
+}
+
+.panel {
+    background: white;
+    margin-bottom: 25px;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px #00000010;
+}
+
+.panel h2 {
+    margin-top: 0;
+    color: #123b65;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-weight: bold;
+}
+
+input {
+    padding: 11px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 15px;
+    width: 100%;
+}
+
+input:focus {
+    outline: 2px solid #93c5fd;
+    border-color: #2563eb;
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px 22px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.hint {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.notice {
+    background: #dbeafe;
+    border-left: 4px solid #2563eb;
+    padding: 13px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 750px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+}
+
+th {
+    background: #eaf1f8;
+    color: #123b65;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+}
+
+.event {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.arrival {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.departure {
+    background: #ffedd5;
+    color: #9a3412;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #64748b;
+}
+
+@media (max-width: 600px) {
+    main {
+        width: 96%;
+    }
+
+    .panel {
+        padding: 15px;
+    }
+
+    header h1 {
+        font-size: 23px;
+    }
+}
